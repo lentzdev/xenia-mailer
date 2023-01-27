@@ -1,0 +1,12 @@
+NAME XENIA2
+
+DESCRIPTION 'Xenia Mailer - COPYRIGHT (C) 1987-2001 A.G.Lentz'
+;
+; default data seg (DGROUP) is unique for each process.
+
+;CODE    SHARED
+
+PROTMODE
+SEGMENTS
+   _TEXT CLASS 'CODE' SHARED READONLY NONDISCARDABLE
+

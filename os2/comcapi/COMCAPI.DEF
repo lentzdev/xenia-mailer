@@ -1,0 +1,32 @@
+LIBRARY     COMCAPI
+
+DESCRIPTION 'ComCapi DLL V0.10.9 - Copyright (C) 1994, Michael Buenter'
+
+EXPORTS
+    ComWatchDog                    @22  
+    ComIsOnline                    @4   
+    ComOutSpace                    @14  
+    ComHRegister                   @3   
+    ComOutCount                    @13  
+    ComGetVersion                  @27  
+    ComSetBaudRate                 @19  
+    ComXON                         @24  
+    ComDTR                         @23  
+    ComRead                        @6   
+    ComGetc                        @7   
+    ComKick                        @26  
+    ComPeek                        @8   
+    ComPutc                        @9   
+    ComBreak                       @25  
+    ComOpen                        @1   
+    ComGetFH                       @16  
+    ComPurge                       @15  
+    ComClose                       @2   
+    ComPause                       @17  
+    ComWrite                       @5   
+    ComGetDCB                      @20  
+    ComSetDCB                      @21  
+    ComRxWait                      @10  
+    ComTxWait                      @11  
+    ComResume                      @18  
+    ComInCount                     @12  

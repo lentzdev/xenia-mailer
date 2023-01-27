@@ -1,0 +1,34 @@
+MAXDEV "README"
+---------------
+
+This archive contains the structures and data definitions used by
+Maximus 3.0.  We may release a more detailed development kit at a
+later point in time, but these structures should be enough to get up
+and running with the new Maximus 3.0 structures.
+
+Note!  This kit is an unsupported product.  While we encourage
+third-party developers to write applications for Maximus, we cannot
+provide developer support or help debug third-party programs.
+
+Contact information
+-------------------
+
+For more information on Maximus, please contact:
+
+email:  sales@lanius.com        (sales inquiries)
+        tech@lanius.com         (problem reports and technical support)
+
+CompuServe:
+        >INTERNET:sales@lanius.com  (sales inquiries)
+        >INTERNET:tech@lanius.com   (problem reports and technical support)
+
+BBS:    +1-613-389-8315
+FAX:    +1-613-634-3058
+
+Post:   Lanius Corporation
+        777 Downing St.
+        Kingston, Ont.
+        CANADA  K7M 5N3
+
+                                    ###
+

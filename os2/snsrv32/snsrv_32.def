@@ -1,0 +1,12 @@
+LIBRARY SNSRV_32 INITINSTANCE
+DESCRIPTION 'Snoop Server Thunk Layer - Copyright (C) 1994, Michael Buenter'
+;
+PROTMODE
+;
+; default data seg (DGROUP) is unique for each process.
+DATA    MULTIPLE NONSHARED READWRITE LOADONCALL
+
+EXPORTS
+      SnoopOpen2        @1
+      SnoopWrite2       @2
+      SnoopClose2       @3

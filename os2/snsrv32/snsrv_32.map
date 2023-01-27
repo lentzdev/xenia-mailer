@@ -1,0 +1,33 @@
+
+ SNSRV_32
+
+ Start         Length     Name                   Class
+ 0001:00000000 000003E1CH CODE32                 CODE 32-bit
+ 0002:00000000 000000008H SEG16T_CALLBACK        CODE 16-bit
+ 0002:00000008 000000019H CODE16                 CODE 16-bit
+ 0003:00000000 000000030H _MSGSEG32              CODE 32-bit
+ 0004:00000000 000000000H SEG16_E:\IBMCPP\snsrv\snsrv_320 BSS16 16-bit
+ 0004:00000000 000000008H LIBDATA16              DATA16 16-bit
+ 0005:00000000 000000004H FAR_BSS                FAR_BSS 16-bit
+ 0006:00000000 0000004C0H DATA32                 DATA 32-bit
+ 0006:000004C0 000000000H CTOR_DTOR1             DATA 32-bit
+ 0006:000004C0 000000000H CTOR_DTOR2             DATA 32-bit
+ 0006:000004C0 000000000H CTOR_DTOR3             DATA 32-bit
+ 0006:000004C0 000000120H CONST32                CONST 32-bit
+ 0006:000005E0 00000000CH EDC1                   EDC_CLASS 32-bit
+ 0006:000005EC 00000018CH EDC2                   EDC_CLASS 32-bit
+ 0006:00000778 000000004H EDC3                   EDC_CLASS 32-bit
+ 0006:0000077C 000000000H BSS32                  BSS 32-bit
+ 0006:0000077C 0000000C4H c_common               BSS 32-bit
+
+ Origin   Group
+ 0000:0   FLAT
+ 0006:0   DGROUP
+
+ Address       Export                  Alias
+
+ 0001:00000000 SnoopClose2             SnoopClose2
+ 0001:00000090 SnoopOpen2              SnoopOpen2
+ 0001:00000028 SnoopWrite2             SnoopWrite2
+
+Program entry point at 0001:000001C4

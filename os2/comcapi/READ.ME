@@ -1,0 +1,87 @@
+ComCapi.DLL  0.11.xx         (C) 1994, Michael Buenter            94-07-03
+A high performance, multithreaded COM and CAPI DLL
+for OS/2 2.x communications
+--------------------------------------------------------------------------
+
+Please do NOT distribute this archive without the consent of the author!
+This package still is in ALPHA stage!
+
+
+Files in this archive:
+   AT.DOC       Hayes AT commands understood by COMCAPIs CAPI-Hayes
+                layer. Adapted from cFos.
+   COMCAPI.DLL  The ComCapi DLL used by BT. Please do NOT discuss
+                this version in public. Do NOT distribute this version.
+   COMCAPI.H    Essentially, this was Pete Fitsimmons header file for
+                COMM/MAXCOMM.DLL.
+                The new COMCAPI calls are listed at the end of the file.
+   READ.ME      This file.
+
+
+ComCapi consists of two major parts:
+   COM:  A high performance interface to OS/2's serial interface.
+         It features fast buffer handling and easy access to the COM ports.
+         It's a 32b redesign of Pete Fitzsimmons COMM/MAXCOMM.DLL;
+         it adds some new features and is fully ported to the 32b calls
+         of OS/2 2.x. Some bugs are fixed.
+         The COM interface is a GAMMA release; there are no known bugs.
+
+   CAPI: An easy interface layer to ISDN devices using their CAPI 1.1
+         interface. COMCAPI adds a Hayes emulation layer on top of CAPI.
+         This allows all modem related programs to use Hayes AT commands
+         to access ISDN (CAPI) devices. This layer is based on the
+         well known cFos Fossil Emulation for the DOS CAPI written by
+         Marting Winkler and Chris Lueders.
+         COMCAPIs AT commands are mostly compatible to cFos.
+         The CAPI interface still is in ALPHA stage and was only
+         tested on the OS/2 CAPI 1.1 V4.27 by Diehl ISDN. I don't
+         know if it works on other OS/2 CAPI implementations.
+         It does NOT use CAPI.DLL, because it relies on its internal
+         device driver calls (DosDevIOCtl).
+         Older versions of Diehls OS/2 CAPI may not work, because the
+         32b semaphores do not work.
+         There will be an updated version (and most probably a device
+         driver version) as soon as CAPI 2.0 drivers are available.
+
+         Known bugs:
+                - ComPause/ComResume do NOT work in this version;
+                  if you use them, OS/2 can't close COMCAPI anymore!
+                  So don't use spawn and shells in this special
+                  BT version.
+
+
+How to use the COM part of COMCAPI:
+    - There's no difference in setting up BT with COMCAPI and the original
+      BT when using the COM part of COMCAPI.
+
+
+How to use the CAPI part of COMCAPI:
+    - use CAPI as your port setting (see supplied BINKLEY.CFG).
+    - COMCAPI saves your port setup into COMCAPI.INI in the current
+      directory.
+
+
+What's new in this internal, non-public BT release?
+    - see whats.new file!
+    - the changes in this internal BT beta version probably never appear
+      in the official product. Please do not distribute this version.
+
+
+Many thanks to:
+    - Peter Fitzsimmons (COMM/MAXCOMM), Chris Lueders (cFos),
+      Vince Perriello (BT), Martin Winkler (cFos) and Diehl ISDN (OS/2 CAPI),
+      Teles (OS/2 CAPI) for their support.
+
+
+How to contact the author:
+     2:301/602@fidonet, BBS, FAX        (++41-41-701045, ZyXEL)
+     2:301/650@fidonet                  (++41-41-701048, Diehl SCOM, X.75)
+
+     100022,2140                        (Compuserve)
+     Michael.Buenter@tik.ethz.ch        (Internet)
+
+     MICS OS/2 Forum
+     Michael Buenter
+     Flaeckehof 10
+     CH-6023 Rothenburg / Switzerland
+

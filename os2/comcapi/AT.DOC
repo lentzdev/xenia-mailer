@@ -1,0 +1,263 @@
+    -----------------------------------------------------------------------
+                              Modem Command Set
+    -----------------------------------------------------------------------
+
+        A       Force Answer
+
+        Bn      Select protocol ONLY for outgoing calls
+                0       X75 without B3 protocoll, 64000bps      ("ISDNC")
+                1       V110 async, 38400bps, 8n1               ("ISDNB")
+                2       V110 async, 19200bps, 8n1               ("ISDNA")
+
+        D..     Dial
+                L       dial last number
+                V       flag connection as SPV
+                0..9    digits
+                A..D#*  special "digits"
+
+        En      Command Echo
+                0       echo off
+                1       echo on
+
+        Hn      On/Off Hook control
+                0       on hook, terminate an active connection
+                1       off hook, reject an incoming call
+
+        In      Inquiry
+                0       product identification and CAPI version and
+                        manufacturer
+                1       status line output
+                2       last call statistics
+                4       last 10 CAPI info dumps
+
+        M       Ringing Sound
+                0       no ring
+                1       ring (pc speaker)
+
+        O       Return On-line
+
+        Qn      Quiet mode, result codes display
+                0       display result codes
+                1       supress result code; be Quiet
+
+        Sr=n    Set register r to value n (registers are unsigned 16bit ints)
+        Sr.b=n  Set bit b to n
+        Sr,b=n  Set bit b to n
+        Sr?     Query register r
+        SrH=n   Set high byte of register r to value n
+        SrL=n   Set low byte of register r to value n
+
+        Vn      Verbal mode
+                0       numeric result codes
+                1       verbal result codes
+
+        Xn      Result code options
+                0       modem looks like a standard 9600 bps modem
+                1       enables CONNECT <rate>
+                2       enables RINGING
+                3       enables RING <incoming caller's id>
+                4       enables CONNECT[...]/<protocols..>
+                5       enables ?
+                6       enables /<cause> on ERROR, NO CARRIER, NO ANSWER
+                        and NO DIAL TONE
+
+        Zn      Restore profile from number n (out of the file PROFILE).
+                This will further reregister the application at the CAPI.
+                If no number is given, 0 will be default.
+
+
+        Fn      \
+        Kn       |
+        Ln       |
+        Mn       |  ignored for compatibility
+        Nn       |
+        P        |
+        T       /
+
+
+    -----------------------------------------------------------------------
+                        extended Modem Command Set
+    -----------------------------------------------------------------------
+
+        &En     EAZ: n = '0' ... '9': changes register 18. Default is
+                EAZ 0.
+
+        &F      Reset to Factory defaults and reset (like ATZ)
+
+        &Lnnn   Listen to what EAZ's; changes register 13; takes multiple
+                digits or '*' for all. Default is EAZ 1.
+
+        &Onnn   Outdial Number. This number will be used as prefix for
+                all phone numbers dialed with the ATD command. Default is
+                none.
+
+        &V      View profile
+
+        &Wn     Write profile to number n (into a file named PROFILE). If
+                no number is given, it defaults to 0.
+
+
+    -----------------------------------------------------------------------
+                              Modem Register Chart
+    -----------------------------------------------------------------------
+
+      Reg#      Description                                     Default
+
+        S0      Auto Answer on (>=1) / off (==0)                0
+
+        S1      Ring count                                      0
+
+        S2      Escape code                                     '+'
+
+        S3
+
+        S4
+
+        S5
+
+        S6
+
+        S7      Number of seconds modem waits for a carrier     60
+
+        S8
+
+        S9      Bit-mapped register:                            32737
+                .0      enable any further result code
+                .1      enable CONNECT <rate>, otherwise
+                        CONNECT 9600 is always returned
+                .2      enable RINGING
+                .3      enable RING <number>
+                .4      enable /X75.. after CONNECT
+                .5      enable ERROR/<cause>
+                .6      enable NO CARRIER/<cause>
+
+        S10     Bit-mapped register:                            0
+                .0      enable CONNECT.../ID=<callerid>
+                .1      disable full status line, just display
+                        the callerid on the left side
+                .2      display numerical values fuer service
+                        indicator / add. si instead of names
+
+        S11     Status line line number (0 - screen length-1)   0
+                Note: only displayed if at&d1
+
+        S12     Delay after ISDN connect (in seconds)           0
+                Useful for calls to ISDN Blaster
+
+        S13     Serviced EAZ Mask                               2
+                Every bit from bit0.. bit9 enables RING on
+                this EAZ ('0' - '9')
+                ex:     0000000010b     answer on '1'
+                        0100000000b     answer on '8'
+                        0001111111b     answer on '0' - '6'
+                        1111111111b     answer all calls
+
+                This register is also modified by the AT&L... command.
+
+        S14     Serviced SI Mask                                0x80
+
+        S15     B-Channel Identification (ffs. 1.TR.6,          0x83
+                3.2.3.4.4.7)
+
+        S16     Source Service Indicator                        7
+
+        S17     Source Additional Service Indicator             0
+
+        S18     Source EAZ (character: '0'=48.. '9'=57)         '0'
+                Sent with connect_req message; information only
+
+                This register is also modified by an AT&En
+                command.
+
+        S19     Inactivity timer: modem disconnects if          0
+                no traffic in N minutes; 0==disabled
+
+        S20     B-Channel, level 2 protocol                     1
+                1       X.75 SLP Basis Operation Mode,
+                        mit Implementation Rules nach T.90
+                2       Transparent-HDLC mit Bit-Stuffing,
+                        Frame-Erkennung und CRC-Check
+                3       Bittransparent
+                4       SNA-SDLC
+                5       X.75 Btx
+                8       V110 mit transparentem B2 protokoll
+                9       V110 SNA-SDLC
+                10      V110 X75 SLP nach T.90
+
+        S21     B-Channel, level 3 protocol                     4
+                1       T70 NL fÅr Leitungsvermittlung (CSPDN)
+                2       ISO 8208 (DTE/DTE)
+                3       Level 3 according to T.90, Appendix II
+                4       transparent
+
+        S22     SELECT_B2_PROTOCOL_REQ: Data-length             2048
+
+        S23     SELECT_B2_PROTOCOL_REQ: Link-Address-A          3
+
+        S24     SELECT_B2_PROTOCOL_REQ: Link-Address-B          1
+
+        S25     SELECT_B2_PROTOCOL_REQ: Modulo-Mode             8
+
+        S26     SELECT_B2_PROTOCOL_REQ: Window-Size             1
+
+        S27     SELECT_B2_PROTOCOL_REQ: V110 user rate          64
+
+        S28     Maximum SEND B2-Framesize                       2048
+
+        S29     B3-Protocol-Overhead in Bytes                   0
+                b3 == 1 (t70nl): 2
+                b3 == 2 (iso8208): 3
+                b3 == 4 (transparent): 0
+
+        S30     SELECT_B3_PROTOCOL_REQ: LIC                     0
+
+        S31     SELECT_B3_PROTOCOL_REQ: HIC                     0
+
+        S32     SELECT_B3_PROTOCOL_REQ: LTC                     0
+
+        S33     SELECT_B3_PROTOCOL_REQ: HTC                     0
+
+        S34     SELECT_B3_PROTOCOL_REQ: LOC                     0
+
+        S35     SELECT_B3_PROTOCOL_REQ: HOC                     0
+
+        S36     SELECT_B3_PROTOCOL_REQ: Modulo-Mode             8
+
+        S37
+
+        S38
+
+        S39     Numbering Type/Plan                             83
+
+        S40     Controller                                      0
+
+        S41     Info-Mask-low                                   63
+
+        S42     Info-Mask-high                                  0
+
+        S43     Default V110 user rate & Protocol               64
+
+        S44
+
+        S45
+
+        S46
+
+        S47
+
+        S48
+
+        S49
+
+        S50    \
+        S51     |
+        S52     |   Default Additional Service Indicator and B2-Protocol
+        S53     |   for every EAZ:
+        S54     |   If the incoming AddSI is 0 then we get the AddSI
+        S55     |   from the low byte of register 50+EAZ; the B2-Protocol
+        S56     |   is got from the high byte.
+        S57     |
+        S58     |
+        S59    /
+
+    -----------------------------------------------------------------------

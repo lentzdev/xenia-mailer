@@ -1,0 +1,14 @@
+this dll allows 32b os/2 programs to access the 16 snserver.dll
+without needing any thunking.
+
+it's only possible to access _one_ snoop server per process
+because there's only on callback function available.
+
+snsrvX32.dll   subsystem version - rename to snsrv_32.dll
+snsrv_32.dll   normal version
+
+both versions seem to run reasonably well.
+
+
+1994-04-20   Michael Buenter   2:301/602@fidonet
+                               mic@mics.chg.imp.com

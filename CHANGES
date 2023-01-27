@@ -1,0 +1,613 @@
+Xenia Mailer/Edit - log of added/changed/fixed stuff
+
+Please note that this is NOT a complete list of changes.
+Many minor things and even some major things don't get in here.
+Also, it doesn't say anything about what I'm currently working on.
+So don't assume too much (if anything) based on this list!
+
+
+1.99.01 (OpenSource release) April/May 2001 ===================================
+ - After changing work, getting engaged/married, migrating to Australia....
+   You get the idea, all this took a while - life happens ;)
+ - Sorting out the various bits making it workable for others
+ - For XENIA project on SourceForge (sourceforge.net), see README.AGL file
+ * It'd be good if someone would keep this log upto date if stuff is done ;)
+
+1.99.00 (OpenSource preparations) 1999 ========================================
+
+ - Because I removed the key code, Xenia now always assumes it is multiline:
+   1. Now you always have to specify a commandline or config option "TASK <n>".
+   2. Before, it used to delete XMRESCAN.FLG at some points if 'Single Task'.
+      This made a single Xenia always do a rescan after starting, packing, etc.
+      Now, it doesn't.
+      If you saw Xenia 1.98.xx report itself with (Single) or (Single Task),
+      check your mail process handling and touch the flag yourself if needed.
+      (Yeah touch, not delete. That's cleaner.)
+   3. "MAILER NO-DIRSCAN" cfg-option checked & refused if single-task.
+      So NOW you can shoot yourself in the foot ;-)
+   4. At some points in the code you WILL see references to serialnumbers.
+      I left them in so the proper positions and structure offsets aren't lost.
+
+ - Y2K check:
+ - Fixed bug in "quoted" modem strings... the quotes were sent too ;-)
+   (reported by Oliver Kopp)
+
+1.98.06+ (GPL preparations) 16 Aug 1998 =======================================
+
+   Xenia: Fixed dayofweek problem after 1 Mar 2000.
+   Xenia/XenEdit: Cleaned up some 2-digit year prints, whenever that was
+                  possible without killing formats.
+   XenEdit: Cleaned up some year nasties in hudson, rbbs.
+
+1.98.06+ (reg.only, fix/beta) 20 May 1996 =====================================
+
+ - Start of Xenia/NT port. Well, port... most code just compiled cleanly.
+   I just haven't got the windowing and async stuff sorted out, so I can't
+   give you a functional EXE yet.
+   HEALTH WARNING: Don't you DARE nag me about Xenia/NT unless you are an
+   experienced Windows/NT programmer who can help me with the win/async code!
+   (and by 'help' I mean actual writing of code, not just providing info.)
+
+ - Fixed the remaining glitches in the period scheduler (from the .05+ alpha).
+   And some other minor stuff.
+
+ - EXTREQ statements can now take upto three of the famous %.0u to include the
+   task number in the command line....
+
+ - Commandline POLL statement now also allows polls to point-addresses.
+
+ - Detection of orphan point .0 files, ie. things for .0 in a .PNT directory.
+   For instance XenObm creates stuff like that if you poll a node with .0
+   XenObm problem, but just to make sure I've added protection to Xenia....
+
+ - Similar to above orphan story, some prog created a .D$0 which Xenia through
+   some internal logic interpreted as a DLO/DUT file and started calling....
+   Fixed.
+
+ - New fax options:
+   FAX PADEOL   Makes Xenia pad a fax page with EOL codes; for some view utils.
+   FAX NOPADEOL The opposite, of course; this is also the default. No padding.
+   FAX RAW      Select RAW fax format instead of QFX or ZFAX.
+                With this option, Xenia will create a XENIAnnn.001 for the
+                first page, XENIAnnn.002 for the second page, and so on.
+
+ - LOCALNETFILE <path>
+   Similar to safenetfile (passworded sessions) but LOCALNETFILE is where PKTs
+   to yourself are put, like fax receive notifications. Many mailprocessors
+   require this, as they don't see passworded quite the same as fully secure.
+   The LOCALNETFILE setting defaults to the same path as SAFENETFILE.
+
+1.98.05+ (restricted alpha for PERIOD scheduler) 06 April 1996 ================
+
+ - Time on statusbar not updated during Hydra session.
+   Prob created while adding the chat code. Fixed.
+
+ - Outgoing FreePoll sometimes didn't work.
+   Prob caused while adding 'MDMRSP BADCALL'. Fixed.
+
+ - *Receiving* long filenames (OS/2 only) via Hydra didn't work. Should now.
+
+ - DIAL statement extended with patterns! New format:
+   DIAL [start] [prefix]/[suffix] [address/telnr-pattern/nodelistflags ...]
+   I added this because of English ISDN implementation, where international
+   ISDN data calls need to be prefixed with 000, analog calls just with 00.
+   If you have an ISDN card/adapter that does both analog and ISDN, there
+   is no other nice way to do it (like with prefixsuffix statements, etc).
+
+ - Period scheduler first put to use....
+   See the new XENPER.CFG for info about configuring the period scheduler.
+   Various config statements will be changed to use period tags.
+   INCLUDE XENPER.CFG somewhere near the start of your XENIA.CFG because
+   other statements will need to use the defined period tags.....
+   General rules for this:
+   Multiple period tags may be specified, separated by | or + chars.
+   The function is active whenever at least one period is active.
+   For some functions use of period tags is optional; if no tags are
+   specified then, that function will always be active.
+   If no periods at all have been configured, everything is also active.
+
+ - Event B flag (BBS) removed, changed to period logic:
+     EXTAPP   <type>[,<pertags>] ...
+     DIALBACK <type>[,<pertags>] ...
+   This means you can control each individual extapp!
+   So now could even have different BBS apps for different times ;-)
+   Temporary note: the 'time to next event' parm to extapp applications
+   does not work at the moment; it will always say 1440 mins (=24 hrs).
+   NOTE: make sure you remove the B flag from all your events!!!
+
+ - Changed syntax for MAILHOUR statement, now uses periods:
+   MAILHOUR <zone> <pertags>
+   Using the predefined periods in XENPER.CFG, change XENSYS.CFG to this:
+   MAILHOUR 1 Z1MH      ; Very simple, Z1MH upto Z6MH are defined periods!
+   MAILHOUR 2 Z2MH
+   MAILHOUR 3 Z3MH
+   MAILHOUR 4 Z4MH
+   MAILHOUR 5 Z5MH
+   MAILHOUR 6 Z6MH
+
+1.98.04+ (reg.only, fix/beta) 09 March 1996 ===================================
+
+ - Sources released of: REQCOMP, XENSYNC, FAXSWAP.
+   (NodeIDX was already available).
+
+ - Hydra Chat facility!
+   Press Alt-C to enable/disable your own keyboard.
+   The special chat window will pop up too if the other end types something
+   (you still have to press Alt-C before typing then!)
+   It IS secure (won't keep the line open in case you are not actively
+   chatting), and the remote can't beep you.
+   Xenia will beep if you press Alt-C while chat is not available for any
+   reason (too early/late in the session, no chat facility on other end, etc).
+   You may move the chat window around the screen by using the cursor keys!
+
+ - Day-of-week displayed wrong in some (local only) places.
+   Think it started 6 Feb 1995 (which is a Wednesday, not a Thursday).
+   Most curious that it didn't show up before. Quirk of months/weekdays...
+
+ - Found & fixed 'Txy' nodelist flag old time-calculation bug (Xenia/DOS only).
+
+ - Not possible to select the last few entries in the outbound window. Fixed.
+
+ - VERBOSE_OUTBOUND keyword removed; with the 'shared' outbound queue, it was
+   only affecting the look of the outbound window anyway, nothing else.
+   Now it always works verbose...
+
+ - Removed support for old The-Box base-36 outbound naming.
+
+ - File sharing code (open function mostly) slightly changed.
+
+ - File transfer receive management code slightly changed.
+   May solve the spurious trap 0d under OS/2 in some Zmodem/Hydra receives.
+
+ - Added base code of the new period scheduler.
+
+ - Added X option to old event scheduler: don't send outbound requests.
+
+ - Statistics (Stats/Moved window) written to logfile before reset at midnight.
+   The log messages have a % identifier. Check it out... upon popular request!
+
+ - Mailsession window now shows time session started.
+
+ - Last in/bbs/out status fields now also show hh:mm.
+
+ - Support for long filenames (OS/2 version) in Zmodem and Hydra now completed.
+   No full paths transmitted, just long filenames.
+   Please note that Xenia follows the Hydra specs to the letter:
+       The first filename field [...] must conform to MS-DOS filename
+       conventions and not exceed 12 characters in length [...].
+       The second field, real filename, is the actual filename on the sending
+       system. If this field is not present, the short filename field is used.
+   So Xenia/2 places the long filename in the second field. If another program
+   claiming long filename support does not receive long filenames from Xenia/2,
+   tell the author of that program to read the specs and fix his/her stuff!
+   The Hydra specs are fairly simple and quite clear on the subject....
+
+ - CallerID detection for Supra 288 added "NMBR = ...."
+
+ - Internal support for CONNECT 128K as used by ZyXEL Elite 2864I.
+   (well you could get it done already with "MDMRSP 128000 CONNECT 128K")
+
+ - Added MDMRSP BADCALL type; for no carrier calls that DID cost something.
+   Will report "$ ... Charged no connect!" and note as failed session.
+
+ - Fixed timing problem in new RINGS function.
+
+ - Mistake with my OS/2 com routines rectified.
+   May solve the EMSI SEND problem some people experienced...
+
+ - Added some additional code to my OS/2 com routines.
+   PCB/2 now definitly works on modem ports!
+   On cFos/2 ports there still appear to be some probs. Please report on this!
+
+ - Added option 'MAILER NO-SETDCB' (OS/2 only), which prevents Xenia from
+   changing all but the bare essentials of the Device Control Block of the
+   comport. This solves the problem with com drivers other than COM/SIO/CFOS,
+   for instance the COM drivers for DigiBoards (was tested on such systems).
+   IMPORTANT: Only use if absolutely necessary!!
+
+ - Internal comport routines (OS/2 only) now open the port in DENYNONE instead
+   of DENYALL mode. This is not entirely as it should be, because under OS/2
+   one is supposed to pass a handle to other apps, not open the comport again.
+   But some programs such as PPP can now be called from Xenia... which is nice.
+
+ - Xenia/2 now tries to create a semaphore \SEM32\XENIAn (n = task number),
+   and reports an error if this fails. Not to be difficult, but for your
+   own safety. All kinds of rather nasty things could otherwise happen,
+   especially with the above change for the comport open in shared mode....
+   The semaphore will exist as long as the Xenia task is running; so you could
+   even use it in a prog or rexx script to check whether tasks are up or not.
+
+ - EMSI_ADDRESSES default setting changed. Used to be 1, now all configured.
+   If EMSI_ADDRESSES IS specified in your config, this change of course has
+   no impact on your setup.
+
+ - Password login for EXTAPP should now work.
+
+ - Internal request processor now checks for carrier.
+
+ - Path probs with SRIF fixed.
+
+ - PHONE statement will now also allow for \, inside phone#, instead of
+   seeing it as separator for the nodelist flags...
+
+ - SPEED [LOCK] <speed> [<divisor>]
+   Optional <divisor> parameter added, for use with clock-doubling comports.
+   These comports allow speeds higher than 115200.
+   The default divisor is 1, of course; for normal comports.
+   If your comport card runs a 2x clock, use divisor 2. For 3x, use 3.. etc.
+   Xenia then takes <speed> as the TRUE speed, and uses <divisor> to calculate
+   the speed at which the comport should be set. So you *see* the TRUE speed!
+   Use this feature with caution, as for instance your BBS software or doors
+   may get confused by speeds like 230400 or 460800 ;-)
+
+ - RINGAPP <prgname> [<parameters>]
+   Before sending answer string, call this application (voice answering apps).
+   It is a direct execute call, no command processor; otherwise passing back an
+   errorlevel does not always work.
+   In addition to the user-specified parameters, Xenia adds some parameters to
+   the end of the commandline: task comport devicename comhandle comspeed
+   This is identical to the first 5 parameters in an EXTAPP application.
+   The 'ring application' should pass back an errorlevel to Xenia:
+   If errorlevel == 0, Xenia will still send its answer string etc.
+   If errorlevel <> 0, Xenia will just init the modem and wait for next call.
+
+ - XenEdit now automatically maintains a backup file while you're writing msgs!
+   Filename: XENEDIT.BAK in the XenEdit home directory.
+   The first backup is made 60 seconds after editing starts, and then every
+   60 seconds or when major things happen (like text import etc).
+   It can also be forced with Alt-W, or by defining an EDIT_KEY for 'backup'.
+   NOTE: the initial 60 second delay gives you the chance to import an old BAK
+   file (for instance if you had a powercut and want to start again).
+   On normal exit of the msg edit routine the BAK file is wiped for crypto
+   security.... during editing, an old BAK is wiped after a new one is written.
+
+ - REQCOMP now uses the 'MAILER' environment variable to find REQUEST.CFG
+
+1.98.03+ (reg.only, fix/beta) 23 October 1995 =================================
+
+ - Xenia no longer loads/uses COMCAPI for normal comports.
+   I've done some tests: my own code eats just as little CPU time, and is just
+   as fast if not a little faster (well, a layer less is always faster eh ;-)
+   COMCAPI is still loaded/used if a 'PORT CAPI' is specified in the config.
+   However, the author of COMCAPI, Michael Buenter, says that his CAPI code is
+   still far from perfect. So if you have any trouble with it, just use cFos/2.
+
+ - EMSI problem with CrossPoint fixed!
+
+ - XENAP*.BAT/CMD and XENID*.BAT/CMD now written in home path, not current dir.
+   Safer; but make sure your own batchfiles take this into account.
+
+ - NodeIDX 1.07 allows for a duplicate zone/region/net if there are no nodes
+   entries in the previously encountered segment. This should fix most trouble.
+
+1.98.02+ (not released) =======================================================
+
+ - Snoop problem 'Can't load/query SNSRV_32.DLL' fixed.
+
+ - If a multiline-registered Xenia would be started without task number,
+   it would trap. Fixed.
+
+ - XMEXIT.n containing an errorlevel wouldn't work (always 0). Fixed.
+
+ - Bug with writing SRIF file (for external request processor). Fixed.
+
+ - Little bug in nodelist lookup for points. Fixed.
+
+ - Xenia sometimes refused to call ('d' call disallowed by OKDIAL line). Fixed.
+
+ - Xenia now reports 'YooHoo/EMSI SEND: Carrier lost (password failure?)'
+   instead of just 'Carrier lost'. Xenia has no way of knowing the reason for
+   the carrier loss, so the 'password failure' is just a guess.... may help.
+
+ - Changed filesharing logic, partly to compensate for LANtastic/DOS stupidity.
+   For a program that supports SHARE.EXE-functionality, it's downright silly
+   to not respond positively to the appropriate DOS call for checking whether
+   sharing is okay. All other LAN-brands I know of do this just fine. Idiotic.
+
+ - XenEdit problem (trap) with username-lookup fixed.
+   Also some mishap with deleting users from the userlist.... fixed.
+
+1.98.01+ (reg.only, fix/beta) 10 October 1995 =================================
+
+ - Xenia will no long run without a task number, even for a single line node.
+   Things were getting very messy indeed. Now, if you don't specify a task
+   number, you'll be assigned task 1. This also applies to utilities like
+   XenSync; all external semaphores and data files will ALWAYS get number now.
+   The 1.98 sample configs already set tasknumber 1 so everybody should be ok.
+   Of course, what task numbers you can define depends on your registration.
+
+ - OS/2 kill signal (Window Close command) is still intercepted by Xenia, but
+   the signal handler now resets to default after the first signal.
+   This means that if the program actually does hang for some reason, you CAN
+   now really close the window by just doing Window Close for a second time.
+   Ye; suddenly thought of this possibility, and wondered whether it'd work.
+   Well, it does ;-)  Seems like an absolutely perfect solution, eh?
+
+ - OS/2 version now automatically uses SHARE / SHAREPORT option.
+
+ - OS/2 version now only loads AGLWIN2.DLL and COMCAPI.DLL, all other DLLs
+   are only loaded if and when they are used. Saves on memory.....
+
+ - DOS version problem with LANtastic 'server ...' error fixed.
+
+ - Probable other 'abort/retry/fail' LANtastic msg on flag at startup fixed.
+
+ - scan_semaphore was counting in 10ths of seconds instead of seconds. Fixed.
+   This may have been the cause of the heavy network load some people
+   experienced.
+
+ - Session password max.length changed from 8 to 39 for EMSI, fully checked.
+
+ - Can specify spaces in appkey cmd string by using underscore (_).
+
+ - Can specify spaces in modem strings and phone numbers using underscore (_).
+
+ - ZyXEL Elite 2864I ISDN/modem CallerID support added.
+
+ - External fax receive wasn't possible... Xenia dropped carrier somewhere.
+
+ - Partial FAXes saved: if a session failed, you do keep all completed pages.
+
+ - Changed FAX timing.
+
+ - FAX QFX
+   Selects writing received faxes in Quicklink II's .QFX format.
+   The default is ZyXEL's ZFAX format (also selectable with 'FAX ZFAX').
+   FAXSWAP/FAXSWAP2 have been updated to be able to bitswap .QFX files too.
+
+ - ZMODEM_TXWINDOW <bytes>
+   option added; works similar to HYDRA_TXWINDOW option. Use only when
+   necessary, like on VMODEM/TELNET links over Internet, with a heavy
+   line delay. It IS compatible with any Zmodem receiver, all within specs.
+   Still, Hydra is faster and also more reliable on these kinds of links.....
+
+ - Improved support for TCP/IP links (like via VMODEM); timing adjustments.
+   Most are handled by Xenia automatically, but some config statements help.
+   Xenia can now handle Telnet/Vmodem links without any timeouts/errors!
+   Here's a sample 'VMODEM.CFG' modem config for Xenia.
+     ; Some phone overrides for TCP/IPable systems
+     PHONE 1:396/1    sstar.com,CM,TELNET
+     PHONE 1:270/101  bbs.paonline.com,CM,TELNET
+     PHONE 1:203/7077 gigo.com,CM,VMODEM,TELNET
+     ; Linespeed adjustments for Telnet/Vmodem connects.
+     ; No the line isn't 2400 bps, but the speed/delays probably will be.
+     ; So the timing need to take that into account, otherwise: trouble.
+     MDMRSP 2400 CONNECT 57600/ARQ/TEL
+     MDMRSP 2400 CONNECT 57600/ARQ/VMP
+     ; Limit the runahead; doesn't really slow down, just improves reliability.
+     ; Do NOT use these parms on normal modem/ISDN lines, that WILL slow down!
+     HYDRA_TXWINDOW  16384
+     HYDRA_RXWINDOW  16384
+     ZMODEM_TXWINDOW 16384
+     ; Some modem config strings
+     OKDIAL VMODEM TELNET -*
+     PREFIXSUFFIX ATDT"#/"|          VMODEM
+     PREFIXSUFFIX ATDT"/"|           TELNET
+     PREFIXSUFFIX ATDT"/"|
+
+ - Buffering of statuslog and timelog changed, you should now always be able
+   to read upto the last line from disk.
+   Logfiles are opened 'shared, deny-write', so any other application that
+   also opens in shared mode will be able to read the file also. So if your
+   LIST or log analyser util won't open the file, its really the util's fault.
+
+ - Outbound scanning optimized for multi node operation and outbound manager.
+   Be sure to touch XMRESCAN.FLG after running your mailprocessor or outbound
+   manager! Something like REM.>C:\XENIA\IPC\XMRESCAN.FLG
+
+ - Added 'mailer no-dirscan' option to switch off outbound directory scanning
+   for specific tasks. Make sure you leave it enabled in at least ONE task! ;-)
+
+ - Manually select preferred node to call next (set to top of outbound window).
+
+ - Some cosmetic problems with the outbound window fixed.
+
+ - Added $ option to events, like Z: Z kills all no-connect retry counters,
+   while $ will kill the counters of failed connects... use with caution!
+
+ - All semaphores, MAILPROCESS, etc now also work if you only have 1 task.
+
+ - Xenia will no longer call itself. Works just like an OKDIAL -... with your
+   akas (but only upto the number specified in emsi_addresses!).
+
+ - RINGS <n>
+   Specify number of rings before answering. Default is 2.
+   This statement obsoletes the 'FIRSTRING' option.
+
+ - MDMRSP option IGNORE
+   Tells Xenia to just ignore that particular response, and get another line.
+   Xenia itself uses it for 'CONNECT FAX' and 'FAX' if 'FAX OFF' is specified,
+   and for 'DATA' unless the USR specific 'DATA <commandstring>' is specified.
+
+ - New commandline option 'ANSWER' tells Xenia to not toggle DTR, not init
+   the modem, but immediately answer phone. Used for VMODEMD (see below).
+
+ - Mult. PHONE entries for one node now individually aware of CM/Txy flags etc.
+
+ - Statistics (Stats/Moved window) automatically reset each day after midnight.
+
+ - XENIA*.EVT file can be changed while Xenia task is still running.
+   You'll still have to exit/start to have Xenia read in the new one, but at
+   least it'll recognize that your event file has changed then.
+   It's a matter of timestamps...
+
+ - XENIA*.BAN file read when needed instead of at startup. Is more flexible.
+
+ - Changed YooHoo and other timing during Vmodem/Telnet sessions.
+
+ - Domain name was sent with leading @ in YooHoo; fixed.
+
+ - Long domain name sent in EMSI instead of abbreviation; makes Bink happy.
+
+ - Diskspace >4GB no longer causes 'not enough diskspace' messages
+
+ - MCP <pipebase> <maxtasks>
+   Support for Maximus 3.00 Master Control Program
+   Examples: MCP \pipe\maximus\mcp 10
+             MCP \\myserver\pipe\maximus\mcp 10
+
+ - Added 'mailer no-directzap' option.
+
+ - REQCOMP: bug in :LATEST handling fixed.
+
+ - Duplicate requests handling improved; a file will only be sent once.
+
+ - SRIF (Standard Request Inferface) external request processor support.
+   EXTREQ <prgname>
+
+ - Engineered away the 64KB limit of REQUEST.IDX in the DOS version of Xenia.
+   Should make happy the sysops of systems with large file bases....
+   Request processsing may be slightly slower now, but not very much.
+
+ - XMHANGUP.n (failure to hangup) semaphore now deleted on startup of task(=n).
+
+ - SHUTDOWN.## renamed to XMEXIT.n (n=task), may contain errorlevel in ASCII.
+   So you can now use 'ECHO 200 >XMEXIT.9' to have Xenia task 9 exit with
+   errorlevel 200. Simple solution, isn't it? No hex codes to calculate.
+
+ - MAILFLAG.## renamed to XMMAILIN.n (n=task in decimal or nothing if no task#)
+
+ - Outbound requests now only deleted at end of succesful session.
+
+ - 'mailer no-pwforce' option to disable checking of other end's password on
+   outgoing calls.
+
+ - Fixed logic error: on outgoing calls, if password was sent but none
+   received, Xenia should (without mailer no-pwforce) option declare a
+   password security violation, and cut off the session.
+
+ - Added EMSI password exchange using 'shared secret' encryption with MD5.
+
+ - EXTAPP ... <string>[,[<password>]] ...
+   Optional password. This implies CR required atfer <string>
+   If ',' present but no <password>, just require CR after <string>
+   If <password> is "*" (sans quotes) password is required but not checked.
+ - CALLBACK ... <string>[,[<password>]]
+   Extended in same way as EXTAPP
+ - LOGINPROMPT <string>
+   Enables login prompting and echo.
+   \r=cr, \n=lf, \s=space, \\=\
+   Sample: LOGINPROMPT \r\n\r\nLogin:\s
+
+ * FreePoll<tm> agl 1994-1995
+ - FREEPOLL_DIAL <address> [<address> ...]
+   Address to try and use freepoll when dialling out
+   Sample FREEPOLL_DIAL 2:283/550
+ - FREEPOLL_PATTERN <pattern>
+   Response pattern to identify freepoll when dialling out
+   Sample: FREEPOLL *Call rejected*     ; CAUSE=34be as decoded by XENCAUSE.CFG
+ - FREEPOLL_ANSWER <address>,<callerid>[,minKB] ...
+   Address+callerid(+minKB) to try and use freepoll when answering
+   Sample FREEPOLL_ANSWER 2:283/550,*33653078,100
+ - REJECT <modem command string>
+   Sample: REJECT ATH1|                 ; works for cFos(/2)
+
+ - CallerID/CLIP catching (with Caller-ID capable modem line, ISDN, or VMODEM)
+   If a file named XENIA.CLI exists in Xenia's home directory, CallerIDs will
+   be matched with calling nodes (mailsessions) and users (only when using the
+   'BBS' option, currently only for Maximus and RA), and that info is stored.
+   So next time there's an incoming call with that CallerID, Xenia will look
+   up print and print the stored information. Could be useful for tracking
+   problems, or just for fun.
+   For BBSuser calls, Xenia will create a file name XENID*.BAT/.CMD (where * is
+   the task number) with the following line: 'SET XENCLI_USERNAME=John Doe'
+   Use is simple: in the batchfile that starts your BBS you do CALL XENID*.BAT,
+   and with for instance Maximus you can then pass the username with the -j
+   parameter: "-j%XENCLI_USERNAME%" (with the double quotes!)
+   Result: Maximus will already know the user's name! Users mostly respond very
+   positively to this trick....
+   If you don't want a CallerID to be sent sent on to the BBS, just edit the
+   XENIA.CLI file: delete everything after the CallerID, and add ',ignore'.
+   This could be necessary if multiple users call from the same phone/IPnumber.
+
+ - Xenia now accepts a 'port NONE' to run a task with no comport.
+   Typically used for FTPMAIL, or to run the outbound scan on a server.
+   Note: such a task still requires a task number!
+
+ - FTPMAIL <z:n/n[.p]> <site> <userid> [<passwd>]
+   OS/2 TCP/IP: FTP mail client - 'dial' using FTP (TCP/IP) instead of normal
+   mailsession. Applies to outgoing calls only.
+   Examples: FTPMAIL  2:24/24  eurostar.de    agl  blabla
+             FTPMAIL  1:396/1  ftp.sstar.com  agl
+
+ - OS/2 TCP/IP: VMODEMD.EXE (Vmodem daemon) can be used to start Xenia tasks
+   on demand for incoming Vmodem and Telnet connections. Kinda like an INETD
+   for Vmodem calls (VMODEMD.EXE responds to the semaphores set by VMODEM.EXE).
+   Setup/usage examples included in VMODEM.CFG
+
+ - SCRIPT <tag> <send> [<expect> <send> <expect> <send> <expect> ...]
+   Script definitions
+   A script may be defined over multiple lines, just use the same tag and the
+   additional lines will be appended with a space inbetween.
+   The scripting uses the well known UUCP format with send/expect strings,
+   and supports \Wnn timeout overrides as well as most \escaping options.
+   A script is a list of send and expect strings, with optional special codes.
+   The strings are separated by a space char, and first string is for send.
+     \escapes on SEND strings in alphabetical order (NOTE: CASE SENSITIVE!)
+        \EOT    Send EOT (end of text) char (ASCII 4)
+        \BREAK  Send break signal
+        \\      Send backslash (\) char
+        \b      Send BS (backspace) char (ASCII 8)
+        \c      Do *not* send CR (ASCII 13) after string (normally one IS sent)
+        \d      Delay for 2 seconds
+        \K      Send break signal
+        \L      Send login name (if there is one)
+        \n      Send LF (linefeed) char (ASCII 10)
+        \N      Send NUL char (ASCII 0)
+        \p      Delay for half a second
+        \P      Send login password (if there is one)
+        \r      Send CR (carriage return) char (ASCII 13)
+                Note that by default, Xenia already adds CR after a send string
+        \s      Send SP (space) char (ASCII 32)
+        \t      Send HT (tab) char (ASCII 9)
+        \ooo    Send char ooo octal
+        \xHH    Send char HH hex
+        All other chars are sent as-is.
+     \escapes on EXPECT strings in alphabetical order (NOTE: CASE SENSITIVE!)
+        \b      Expect BS (backspace) char (ASCII 8)
+        \n      Expect LF (linefeed) char (ASCII 10)
+        \N      Expect NUL char (ASCII 0)
+        \r      Expect CR (carriage return) char (ASCII 13)
+        \s      Expect SP (space) char (ASCII 32)
+        \t      Expect HT (tab) char (ASCII 9)
+        \ooo    Expect char ooo octal
+        \xHH    Expect char HH hex
+        All other chars are expected as-is.
+        \Wnn    The default wait timeout on an EXPECT string is 10 seconds.
+                You may change this timeout for the current string by adding
+                \Wnn to the end of the string, where nn is the required delay
+                in seconds.
+     Normally, a timeout causes the script to fail (ie. Xenia aborts).
+     You can get around this by using so-called sub-expect strings:
+        ogin:~2-\c\r\d\d\r-ogin:~15-\c\r\d\d\r-ogin:
+     From the example above: if the string 'oring:' doesn't arrive within
+     2 seconds, a CR is sent, 4 seconds delay, another CR, and then go on
+     to wait for 'ogin:' again. So you put SEND strings inside EXPECT strings.
+     They are separated by a dash character (-). If the expected string IS
+     (finally) received, the rest of the sub-expect stuff is skipped.
+
+ - COLOUR SCRIPT ... <same parameters as for COLOURS FILE>
+
+ - TERMSCRIPT <tag>[,<loginname>[,<password>]] <address>|<phone#> [...]
+   Use scripts in terminal mode for the specified address/phone# patterns.
+   Scripts take precedence over IEMSI.
+   Underscore in <loginname> will be replaced by space.
+
+ - MAILSCRIPT <tag>[,<loginname>[,<password>]] <address>|<phone#> [...]
+   Using scripts in (FidoNet-tech) mailer mode; started right after the
+   dialler gets CONNECT, before calling the normal mailsession handler.
+   Underscore in <loginname> will be replaced by space.
+
+ - Xenia Edit: config reading upgraded for GEcho 1.20
+
+ - NODEIDX: new statement 'UserList' added to NODEIDX.CFG
+   With this is used, XenEdit can look up names/addresses from all nodelists.
+   The normal pattern matching works; and even though it's a sequential scan,
+   it seems to be quite fast enough.
+   If this works ok, I'll add the 'lookup by name' to Xenia Mailer as well.
+
+1.98 (Eval) January 1995 ======================================================
+
+ - Start of this particular log
+
+===end of changes file ===
