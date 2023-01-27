@@ -46,12 +46,15 @@ To run Xenia, you'll need Xenia configuration files and Xenia tools.
 
 If you're using Borland C, check TURBOC.CFG and TLINK.CFG in bc\bin\
 TURBO.CFG should have lines like
+
 	-Iu:\bc\include
 	-Iu:\bc\include\sys
 	-Iu:\bc\aglwin
 	-Lu:\bc\lib
 	-Lu:\bc\aglwin
+
 TLINK.CFG should contain something like
+
 	/Lu:\bc\lib;u:\bc\aglwin;
 
 
